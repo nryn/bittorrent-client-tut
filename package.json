@@ -4,6 +4,7 @@
   "description": "A bittorrent client for education purposes!",
   "main": "index.js",
   "scripts": {
+    "autotest": "./node_modules/.bin/jasmine-node test/*Spec.js --autotest --color", 
     "test": "./node_modules/.bin/jasmine-node test/*Spec.js"
   },
   "repository": {
