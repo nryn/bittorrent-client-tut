@@ -1,4 +1,10 @@
-// 'use strict';
+'use strict';
 const fs = require('fs');
-const torrent = fs.readFileSync('flagfromserver.torrent');
-console.log(torrent.toString('utf8'));
+const bencode = require('bencode');
+const tracker = require('./tracker');
+
+const torrent = bencode.decode(fs.readFileSync('testfile.txt.torrent'));
+
+tracker.getPeers(torrent, peers => {
+  console.log('list of peers: ', peers);
+});

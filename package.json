@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/nryn/bittorrent-client-tut/issues"
   },
-  "homepage": "https://github.com/nryn/bittorrent-client-tut"
+  "homepage": "https://github.com/nryn/bittorrent-client-tut",
+  "dependencies": {
+    "bencode": "^0.12.0"
+  }
 }
