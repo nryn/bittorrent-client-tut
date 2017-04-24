@@ -4,6 +4,8 @@ const dgram = require('dgram');
 const Buffer = require('buffer').Buffer;
 const urlParse = require('url').parse;
 const crypto = require('crypto');
+const torrentParser = require('./torrent-parser');
+const util = require('./util');
 
 module.exports.getPeers = (torrent, callback) => {
   const socket = dgram.createSocket('udp4');
@@ -16,7 +18,7 @@ module.exports.getPeers = (torrent, callback) => {
 
       const connResp = parseConnResp(response);
 
-      const announceReq = buildAnnounceReq(connResp.connectionId);
+      const announceReq = buildAnnounceReq(connResp.connectionId, torrent);
       udpSend(socket, announceReq, url);
     } else if (respType(response) === 'announce') {
 
@@ -57,8 +59,24 @@ function parseConnResp(resp) {
   }
 }
 
-function buildAnnounceReq(connId) {
-  // ...
+function buildAnnounceReq(connId, torrent, port=6881) {
+  const buf = Buffer.allocUnsafe(98);
+
+  connId.copy(buf, 0);
+  buf.writeUInt32BE(1, 8);
+  crypto.randomBytes(4).copy(buf, 12);
+  torrentParser.infoHash(torrent).copy(buf, 16);
+  util.genId().copy(buf, 36);
+  Buffer.alloc(8).copy(buf, 56);
+  torrentParser.size(torrent).copy(buf, 64);
+  Buffer.alloc(8).copy(buf, 72);
+  buf.writeUInt32BE(0, 80);
+  buf.writeUInt32BE(0, 80);
+  crypto.randomBytes(4).copy(buf, 88);
+  buf.writeInt32BE(-1, 92);
+  buf.writeUInt16BE(port, 96);
+
+  return buf;
 }
 
 function parseAnnounceResp(resp) {
