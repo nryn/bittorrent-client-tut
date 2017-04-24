@@ -4,7 +4,7 @@
   "description": "A bittorrent client for education purposes!",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/jasmine-node test/*Spec.js"
   },
   "repository": {
     "type": "git",
@@ -18,5 +18,8 @@
   "homepage": "https://github.com/nryn/bittorrent-client-tut",
   "dependencies": {
     "bencode": "^0.12.0"
+  },
+  "devDependencies": {
+    "jasmine-node": "^1.14.5"
   }
 }
