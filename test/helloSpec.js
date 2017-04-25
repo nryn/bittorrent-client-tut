@@ -1,4 +1,4 @@
-describe("A suite is just a function", function() {
+describe("A suite is just a function", () => {
   var a;
 
   it("and so is a spec", function() {
@@ -7,7 +7,7 @@ describe("A suite is just a function", function() {
     expect(a).toBe(true);
   });
 
-  it("blah...", function() {
+  it("blah...", () => {
 
     expect(2).toBe(2);
   })
