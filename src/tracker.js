@@ -34,12 +34,8 @@ function udpSend(socket, message, rawUrl, callback=()=>{}) {
   socket.send(message, 0, message.length, url.port, url.hostname, callback);
 }
 
-function respType(resp) {
-  // ...
-}
-
 function buildConnReq() {
-  const buf = Buffer.alloc(16);
+  const buf = Buffer.allocUnsafe(16);
 
   buf.writeUInt32BE(0x417, 0);
   buf.writeUInt32BE(0x27101980, 4);

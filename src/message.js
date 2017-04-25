@@ -5,6 +5,7 @@ const torrentParser = require('./torrent-parser');
 const util = require('./util');
 
 module.exports.parse = msg => {
+  console.log("parse");
   const id = msg.length > 4 ? msg.readInt8(4) : null;
   let payload = msg.length > 5 ? msg.slice(5) : null;
   if (id === 6 || id === 7 || id === 8) {
@@ -24,6 +25,7 @@ module.exports.parse = msg => {
 };
 
 module.exports.buildHandshake = torrent => {
+  console.log("buildHandshake");
   const buf = Buffer.alloc(68);
   // pstrlen
   buf.writeUInt8(19, 0);
@@ -35,13 +37,14 @@ module.exports.buildHandshake = torrent => {
   // info hash
   torrentParser.infoHash(torrent).copy(buf, 28);
   // peer id
-  buf.write(util.genId());
+  util.genId().copy(buf, 48);
   return buf;
 };
 
-module.exports.buildKeepAlive = () => Buffer.alloc(4);
+module.exports.buildKeepAlive = () => {console.log("keepalive"); Buffer.alloc(4)};
 
 module.exports.buildChoke = () => {
+  console.log("choke");
   const buf = Buffer.alloc(5);
   // length
   buf.writeUInt32BE(1, 0);
@@ -51,6 +54,7 @@ module.exports.buildChoke = () => {
 };
 
 module.exports.buildUnchoke = () => {
+  console.log("unchoke");
   const buf = Buffer.alloc(5);
   // length
   buf.writeUInt32BE(1, 0);
@@ -60,6 +64,7 @@ module.exports.buildUnchoke = () => {
 };
 
 module.exports.buildInterested = () => {
+  console.log("buildInterested");
   const buf = Buffer.alloc(5);
   // length
   buf.writeUInt32BE(1, 0);
@@ -69,6 +74,7 @@ module.exports.buildInterested = () => {
 };
 
 module.exports.buildUninterested = () => {
+  console.log("buildUninterested");
   const buf = Buffer.alloc(5);
   // length
   buf.writeUInt32BE(1, 0);
@@ -78,6 +84,7 @@ module.exports.buildUninterested = () => {
 };
 
 module.exports.buildHave = payload => {
+  console.log("have");
   const buf = Buffer.alloc(9);
   // length
   buf.writeUInt32BE(5, 0);
@@ -89,6 +96,7 @@ module.exports.buildHave = payload => {
 };
 
 module.exports.buildBitfield = bitfield => {
+  console.log("bitfield");
   const buf = Buffer.alloc(14);
   // length
   buf.writeUInt32BE(payload.length + 1, 0);
@@ -100,6 +108,7 @@ module.exports.buildBitfield = bitfield => {
 };
 
 module.exports.buildRequest = payload => {
+  console.log("buildReq");
   const buf = Buffer.alloc(17);
   // length
   buf.writeUInt32BE(13, 0);
@@ -115,6 +124,7 @@ module.exports.buildRequest = payload => {
 };
 
 module.exports.buildPiece = payload => {
+  console.log("buildPiece");
   const buf = Buffer.alloc(payload.block.length + 13);
   // length
   buf.writeUInt32BE(payload.block.length + 9, 0);
@@ -130,6 +140,7 @@ module.exports.buildPiece = payload => {
 };
 
 module.exports.buildCancel = payload => {
+  console.log("buildCancel");
   const buf = Buffer.alloc(17);
   // length
   buf.writeUInt32BE(13, 0);
@@ -145,6 +156,7 @@ module.exports.buildCancel = payload => {
 };
 
 module.exports.buildPort = payload => {
+  console.log("buildPort");
   const buf = Buffer.alloc(7);
   // length
   buf.writeUInt32BE(3, 0);
